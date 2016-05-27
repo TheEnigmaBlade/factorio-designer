@@ -1,0 +1,124 @@
+.orange {
+  color: #FF7200; }
+
+a.orange:hover, a.orange:focus {
+  color: #b35000;
+  text-decoration: none; }
+
+.btn-orange {
+  background-color: #FF7200;
+  border-color: #FF7200;
+  color: white; }
+  .btn-orange:hover {
+    background-color: #b35000;
+    border-color: #b35000; }
+
+html, body {
+  margin: 0;
+  overflow: hidden; }
+
+body {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  width: 100vw;
+  height: 100vh; }
+
+p {
+  margin: 0; }
+
+label {
+  margin: 0; }
+  label input {
+    vertical-align: sub; }
+
+.left {
+  float: left; }
+
+.right {
+  float: right; }
+
+.hidden {
+  display: none; }
+
+.btn-xs {
+  padding: 0.05rem 0.5rem;
+  font-size: 0.725rem;
+  border-radius: 0.2rem; }
+
+#main-canvas {
+  flex-grow: 1; }
+
+#main-sidebar {
+  flex-grow: 0;
+  flex-basis: 364px;
+  padding: 12px;
+  background-color: #272B30;
+  border-left: 1px solid #3e444c;
+  color: white; }
+  #main-sidebar header {
+    margin-bottom: 24px;
+    text-align: center; }
+    #main-sidebar header h2 {
+      margin: 0 0 4px;
+      padding: 0; }
+      #main-sidebar header h2 b {
+        text-shadow: 1px 1px 0 #994400, 2px 2px 0 #994400; }
+  #main-sidebar footer {
+    width: 340px;
+    position: absolute;
+    bottom: 10px;
+    font-size: 12px;
+    color: #b3b3b3; }
+    #main-sidebar footer .github {
+      width: 14px;
+      vertical-align: text-top; }
+    #main-sidebar footer .credits {
+      margin-top: 4px; }
+
+.sidebar-panel {
+  background-color: #373a3c;
+  border-radius: 4px;
+  padding: 8px;
+  box-shadow: 1px 1px 0 0 #22262a; }
+
+.sidebar-section {
+  margin-bottom: 12px; }
+  .sidebar-section h4 img {
+    width: 24px;
+    vertical-align: text-top; }
+  .sidebar-section .action-buttons {
+    margin-top: 6px; }
+
+.item-list {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  list-style: none;
+  margin: 0;
+  padding: 0; }
+  .item-list .item {
+    padding: 2px;
+    background-color: #1f7e9a;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-bottom: 4px; }
+    .item-list .item:hover {
+      background-color: #339ab9; }
+    .item-list .item.active {
+      background-color: chartreuse; }
+
+.options h6 {
+  margin-bottom: 2px; }
+
+.options label {
+  font-size: 12px; }
+
+.browser-update {
+  padding: 20px;
+  min-width: 200px; }
+
+.controls-list {
+  list-style: none; }
+  .controls-list li {
+    margin-bottom: 4px; }

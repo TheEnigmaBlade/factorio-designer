@@ -4,7 +4,7 @@
 
 # Custom
 ## Factorio images
-img/icons/*
+#img/icons/*
 ## Generated files
-css/*.css
+#css/*.css
 #js/*.js
