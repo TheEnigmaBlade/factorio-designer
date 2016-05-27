@@ -6,8 +6,12 @@
 node_modules
 
 # Custom
+
 ## Factorio images
-src/img/icons/*
+/src/img/icons/*
+
 ## Generated files
-css/*.css
-#js/*.js
+/dist
+/src/css/*.css
+#/src/js/*.js
+#/*.js
