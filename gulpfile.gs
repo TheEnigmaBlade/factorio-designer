@@ -19,12 +19,32 @@ gulp.task("copy", [
 ])
 
 gulp.task('copy:html', {{
+	var data = require("./src/data.json"),
+		dataAttr = ["range"]
+	fun replaceData(stream) {
+		for key in Object.keys(data) {
+			for attr in dataAttr {
+				var val = data[key][attr]
+				if val != undefined and val != null {
+					stream = stream.pipe(
+						plugins().replace(new RegExp("{{"+key+"-"+attr+"}}", "g"), val)
+					)
+				}
+			}
+		}
+		return stream
+	}
+	
 	gulp.src(
 		dirs.src+"/*.html"
 	).pipe(
 		 plugins().replace(/{{JQUERY_VERSION}}/g, libs.jquery.version)
 	).pipe(
 		 plugins().replace(/{{VERSION}}/g, pkg.version)
+	).pipe(
+		plugins().foreach({{:stream, file:
+			return replaceData(stream)
+		}})
 	).pipe(
 		gulp.dest(dirs.dist)
 	)

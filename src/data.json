@@ -1,0 +1,14 @@
+{
+	"small-electric-pole": {
+		"range": 3
+	},
+	"medium-electric-pole": {
+		"range": 4
+	},
+	"big-electric-pole": {
+		"range": 2
+	},
+	"substation": {
+		"range": 8
+	}
+}

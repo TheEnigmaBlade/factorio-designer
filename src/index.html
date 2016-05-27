@@ -54,10 +54,10 @@
 		<section class="sidebar-section sidebar-panel">
 			<h4><img src="img/icons/big-electric-pole.png" /> Power</h4>
 			<ul class="item-list">
-				<li class="item" data-width="1" data-height="1" data-range="2"><img src="img/icons/small-electric-pole.png" /></li>
-				<li class="item" data-width="1" data-height="1" data-range="4"><img src="img/icons/medium-electric-pole.png" /></li>
-				<li class="item" data-width="1" data-height="1" data-range="1"><img src="img/icons/big-electric-pole.png" /></li>
-				<li class="item" data-width="2" data-height="2" data-range="8"><img src="img/icons/substation.png" /></li>
+				<li class="item" data-width="1" data-height="1" data-range="{{small-electric-pole-range}}"><img src="img/icons/small-electric-pole.png" /></li>
+				<li class="item" data-width="1" data-height="1" data-range="{{medium-electric-pole-range}}"><img src="img/icons/medium-electric-pole.png" /></li>
+				<li class="item" data-width="1" data-height="1" data-range="{{big-electric-pole-range}}"><img src="img/icons/big-electric-pole.png" /></li>
+				<li class="item" data-width="2" data-height="2" data-range="{{substation-range}}"><img src="img/icons/substation.png" /></li>
 			</ul>
 		</section>
 		<section class="sidebar-section sidebar-panel">
@@ -129,7 +129,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">No, go back!</button>
-					<button type="button" class="btn btn-primary">Yes, burn it.</button>
+					<button type="button" id="clear-tiles" class="btn btn-primary" data-dismiss="modal">Yes, burn it.</button>
 				</div>
 			</div>
 		</div>

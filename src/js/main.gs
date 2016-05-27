@@ -26,7 +26,9 @@ var drawWidth = c.width,
 	showHover = true,
 	hoverTileX = -1,
 	hoverTileY = -1,
-	hoverConflict = false
+	hoverConflict = false,
+	lastTileX = -1,
+	lastTileY = -1
 	
 var tiles = {},
 	currentItem = null,
@@ -133,7 +135,7 @@ fun drawPower {
 }
 
 fun drawCenteredRange(x, y, data, draw) {
-	if data.range > 1 {
+	if data.range > 0 {
 		var left = x - data.range,
 			top = y - data.range,
 			width = data.width + data.range*2,
@@ -333,15 +335,20 @@ c.onmousemove = {{:e:
 	hoverTileX = (newX-offsetX) /# tileSize
 	hoverTileY = (newY-offsetY) /# tileSize
 	
-	hoverConflict = false
-	if currentItem {
-		iterTiles({{:tile:
-			if tile.overlapsTileData(hoverTileX, hoverTileY, currentItem) {
-				hoverConflict = true
-				return true
-			}
-		}})
+	if hoverTileX != lastTileX or hoverTileY != lastTileY {
+		hoverConflict = false
+		if currentItem {
+			iterTiles({{:tile:
+				if tile.overlapsTileData(hoverTileX, hoverTileY, currentItem) {
+					hoverConflict = true
+					return true
+				}
+			}})
+		}
 	}
+	
+	lastTileX = hoverTileX
+	lastTileY = hoverTileY
 	
 	draw()
 }}
@@ -358,7 +365,16 @@ $(c).mouseleave({{
 
 $(c).mousewheel({{:e:
 	var zoomDist = e.deltaY
-	print(zoomDist)
+	if zoomDist > 0 {
+		tileSize *= 2**zoomDist
+	}
+	else {
+		tileSize /= 2**(-zoomDist)
+	}
+	tileHalfSize = tileSize/2
+	
+	resize()
+	draw()
 }})
 
 $(window).keypress({{:e:
@@ -476,7 +492,7 @@ fun getItemData($item) {
 	return {
 		width: $item.data("width") or 1,
 		height: $item.data("height") or 1,
-		range: $item.data("range") or 1,
+		range: $item.data("range") or 0,
 		image: $item.data("img") ? $("#"+$item.data("img"))[0] : $item.find("img")[0],
 		baseImage: $item.data("base-img") ? $("#"+$item.data("base-img"))[0] : null,
 		rotatable: $item.data("rotatable") or false
@@ -491,6 +507,10 @@ fun clearSelectedItem() {
 $("#option-debug").change({{
 	DEBUG = this.checked
 	draw()
+}})
+
+$("#clear-tiles").click({{
+	clearTiles()
 }})
 
 // Start
