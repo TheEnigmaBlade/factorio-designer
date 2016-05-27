@@ -1,12 +1,14 @@
 {
   "name": "factorio-designer",
-  "version": "0.1.0",
+  "version": "0.1.1",
+  "author": {
+    "name": "Enigma",
+    "email": "",
+    "url": "https://github.com/TheEnigmaBlade"
+  },
   "homepage": "https://github.com/TheEnigmaBlade/factorio-designer",
   "private": true,
-  "license": {
-    "type": "MIT",
-    "url": "https://github.com/TheEnigmaBlade/factorio-designer/blob/master/LICENSE"
-  },
+  "license": "MIT",
   "scripts": {
     "build": "gulp build"
   },

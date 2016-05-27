@@ -42,6 +42,10 @@ gulp.task('copy:html', {{
 	).pipe(
 		 plugins().replace(/{{VERSION}}/g, pkg.version)
 	).pipe(
+		 plugins().replace(/{{AUTHOR}}/g, pkg.author.name)
+	).pipe(
+		 plugins().replace(/{{HOMEPAGE}}/g, pkg.homepage)
+	).pipe(
 		plugins().foreach({{:stream, file:
 			return replaceData(stream)
 		}})
