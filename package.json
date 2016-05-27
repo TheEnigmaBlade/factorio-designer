@@ -1,0 +1,33 @@
+{
+  "name": "factorio-designer",
+  "version": "0.1.0",
+  "homepage": "https://github.com/TheEnigmaBlade/factorio-designer",
+  "private": true,
+  "license": {
+    "type": "MIT",
+    "url": "https://github.com/TheEnigmaBlade/factorio-designer/blob/master/LICENSE"
+  },
+  "scripts": {
+    "build": "gulp build"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "devDependencies": {
+    "del": "^2.2.0",
+    "glob": "^7.0.3",
+    "gulp": "^3.9.1",
+    "gulp-load-plugins": "^1.2.4",
+    "gulp-replace": "^0.5.4",
+    "run-sequence": "^1.2.1"
+  },
+  "directories": {
+    "src": "src",
+    "dist": "dist"
+  },
+  "libraries": {
+    "jquery": {
+      "version": "2.2.4"
+    }
+  }
+}

@@ -2,9 +2,12 @@
 .sass-cache/
 *.css.map
 
+# Node/Gulp
+node_modules
+
 # Custom
 ## Factorio images
-img/icons/*
+src/img/icons/*
 ## Generated files
 css/*.css
 #js/*.js
