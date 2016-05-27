@@ -1,0 +1,10 @@
+# Sass
+.sass-cache/
+*.css.map
+
+# Custom
+## Factorio images
+img/icons/*
+## Generated files
+css/*.css
+#js/*.js

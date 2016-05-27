@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<title>Factorio Designer</title>
+	
+	<link rel="stylesheet" href="css/vendor/bootstrap.min.css">
+	<link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+	<!--[if lt IE 11]>
+		<p class="browser-update">You are using an <strong>outdated browser</strong>, which will prevent this site from working correctly. Please <a href="http://browsehappy.com/">upgrade your browser</a> to use the modern web.</p>
+	<![endif]-->
+	
+	<!-- Content -->
+	<canvas id="main-canvas"></canvas>
+	<aside id="main-sidebar">
+		<header class="sidebar-panel">
+			<h2><b class="orange">Factorio</b> Designer</h2>
+		</header>
+		<section class="sidebar-section sidebar-panel">
+			<h4><img src="img/icons/basic-transport-belt.png" /> General</h4>
+			<ul class="item-list">
+				<li class="item" data-width="1" data-height="1" data-rotatable="true"><img src="img/icons/basic-transport-belt.png" /></li>
+				<li class="item" data-width="1" data-height="1" data-rotatable="true"><img src="img/icons/fast-transport-belt.png" /></li>
+				<li class="item" data-width="1" data-height="1" data-rotatable="true"><img src="img/icons/express-transport-belt.png" /></li>
+				
+				<li class="item" data-width="1" data-height="1" data-rotatable="true"><img src="img/icons/basic-transport-belt-to-ground.png" /></li>
+				<li class="item" data-width="1" data-height="1" data-rotatable="true"><img src="img/icons/fast-transport-belt-to-ground.png" /></li>
+				<li class="item" data-width="1" data-height="1" data-rotatable="true"><img src="img/icons/express-transport-belt-to-ground.png" /></li>
+				
+				<li class="item" data-width="2" data-height="1" data-rotatable="true"><img src="img/icons/basic-splitter.png" /></li>
+				<li class="item" data-width="2" data-height="1" data-rotatable="true"><img src="img/icons/fast-splitter.png" /></li>
+				<li class="item" data-width="2" data-height="1" data-rotatable="true"><img src="img/icons/express-splitter.png" /></li>
+				
+				<li class="item" data-width="1" data-height="1" data-rotatable="true"><img src="img/icons/burner-inserter.png" /></li>
+				<li class="item" data-width="1" data-height="1" data-rotatable="true"><img src="img/icons/basic-inserter.png" /></li>
+				<li class="item" data-width="1" data-height="1" data-rotatable="true"><img src="img/icons/fast-inserter.png" /></li>
+				<li class="item" data-width="1" data-height="1" data-rotatable="true"><img src="img/icons/smart-inserter.png" /></li>
+				<li class="item" data-width="1" data-height="1" data-rotatable="true"><img src="img/icons/long-handed-inserter.png" /></li>
+			</ul>
+		</section>
+		<section class="sidebar-section sidebar-panel">
+			<h4><img src="img/icons/assembling-machine-1.png" /> Factories</h4>
+			<ul class="item-list">
+				<li class="item" data-width="3" data-height="3" data-base-img="img-factory"><img src="img/icons/copper-cable.png" /></li>
+				<li class="item" data-width="3" data-height="3" data-base-img="img-factory"><img src="img/icons/electronic-circuit.png" /></li>
+				<li class="item" data-width="3" data-height="3" data-base-img="img-factory"><img src="img/icons/advanced-circuit.png" /></li>
+			</ul>
+			<img id="img-factory" class="hidden" src="img/tiles/factory.png" />
+		</section>
+		<section class="sidebar-section sidebar-panel">
+			<h4><img src="img/icons/big-electric-pole.png" /> Power</h4>
+			<ul class="item-list">
+				<li class="item" data-width="1" data-height="1" data-range="2"><img src="img/icons/small-electric-pole.png" /></li>
+				<li class="item" data-width="1" data-height="1" data-range="4"><img src="img/icons/medium-electric-pole.png" /></li>
+				<li class="item" data-width="1" data-height="1" data-range="1"><img src="img/icons/big-electric-pole.png" /></li>
+				<li class="item" data-width="2" data-height="2" data-range="8"><img src="img/icons/substation.png" /></li>
+			</ul>
+		</section>
+		<section class="sidebar-section sidebar-panel">
+			<h4><img src="img/icons/wooden-chest.png" /> Storage</h4>
+			<ul class="item-list">
+				<li class="item"><img src="img/icons/wooden-chest.png" /></li>
+				<li class="item"><img src="img/icons/iron-chest.png" /></li>
+				<li class="item"><img src="img/icons/steel-chest.png" /></li>
+				<li class="item"><img src="img/icons/smart-chest.png" /></li>
+				<li class="item"><img src="img/icons/logistic-chest-active-provider.png" /></li>
+				<li class="item"><img src="img/icons/logistic-chest-passive-provider.png" /></li>
+				<li class="item"><img src="img/icons/logistic-chest-requester.png" /></li>
+				<li class="item"><img src="img/icons/logistic-chest-storage.png" /></li>
+			</ul>
+		</section>
+		<section class="sidebar-section sidebar-panel options">
+			<span class="right"><button type="button" class="btn btn-orange btn-xs help-button" data-toggle="modal" data-target="#help-dialog">Help</button></span>
+			<h6>Options</h6>
+			<label><input type="checkbox" id="option-debug" autocomplete="off" checked> Debug mode</label>
+			
+			<div class="action-buttons">
+				<button type="button" class="btn btn-orange btn-sm save-button disabled">Save</button>
+				<button type="button" class="btn btn-orange btn-sm save-button disabled">Load</button>
+				<button type="button" class="btn btn-danger-outline btn-sm save-button right" data-toggle="modal" data-target="#clear-dialog">Clear</button>
+			</div>
+		</section>
+		<footer class="sidebar-panel">
+			<div class="clearfix">
+				<p class="left">Created by Enigma (v0.1)</p>
+				<p class="right">View on <a class="orange" href="https://github.com/TheEnigmaBlade"><img class="github" src="img/GitHub-Mark-Light-32px.png"/> GitHub</a></p>
+			</div>
+			<p class="credits">Images created by Wube Software</p>
+		</footer>
+	</aside>
+	
+	<!-- Dialogs -->
+	
+	<!-- Help dialog -->
+	<div class="modal fade" id="help-dialog" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Factorio Designer Help</h4>
+				</div>
+				<div class="modal-body">
+					<h3>Input</h3>
+					<ul id="help-controls-list" class="controls-list">
+						<li>Place tile <kbd>left mouse</kbd></li>
+						<li>Remove tile <kbd>shift + left mouse</kbd></li>
+						<li>Move grid <kbd>middle mouse</kbd> <kbd>alt + left mouse</kbd></li>
+					</ul>
+					<p>Mouse operations support drag to repeat, just like in Factorio.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Clear dialog -->
+	<div class="modal fade" id="clear-dialog" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Accidents are bad</h4>
+				</div>
+				<div class="modal-body">
+					<p>Are you sure you want to clear the design? There are no takesy backsies.</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">No, go back!</button>
+					<button type="button" class="btn btn-primary">Yes, burn it.</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Scripts -->
+	<script src="js/vendor/jquery-2.2.4.min.js"></script>
+	<script src="js/vendor/jquery.throttle-debounce.min.js"></script>
+	<script src="js/vendor/jquery.mousewheel.min.js"></script>
+	<script src="js/vendor/bootstrap.min.js"></script>
+	<script src="js/vendor/underscore.min.js"></script>
+	<script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,179 @@
+$orange: #FF7200
+$orange-hover: darken($orange, 15%)
+
+$sidebar-width: 364px
+$sidebar-padding: 12px
+$sidebar-bg: #272B30
+$sidebar-border: lighten($sidebar-bg, 10%)
+$sidebar-color: white
+
+$sidebar-panel-bg: rgb(55, 58, 60)
+
+$item-size: 32px
+$item-padding: 2px
+$item-bg: #1f7e9a
+$item-hover-bg: desaturate(lighten($item-bg, 10%), 10%)
+$item-active-bg: chartreuse
+
+.orange
+	color: $orange
+	
+a.orange
+	&:hover, &:focus
+		color: $orange-hover
+		text-decoration: none
+
+.btn-orange
+	background-color: $orange
+	border-color: $orange
+	color: $sidebar-color
+	
+	&:hover
+		background-color: $orange-hover
+		border-color: $orange-hover
+
+// General
+
+html, body
+	margin: 0
+	overflow: hidden
+
+body
+	display: flex
+	flex-direction: row
+	align-items: stretch
+	
+	width: 100vw
+	height: 100vh
+
+p
+	margin: 0
+
+label
+	margin: 0
+	
+	input
+		vertical-align: sub
+
+.left
+	float: left
+
+.right
+	float: right
+	
+.hidden
+	display: none
+
+.btn-xs
+	padding: 0.05rem 0.5rem
+	font-size: 0.725rem
+	border-radius: 0.2rem
+
+// Main
+
+#main-canvas
+	flex-grow: 1
+
+#main-sidebar
+	flex-grow: 0
+	flex-basis: $sidebar-width
+	
+	padding: $sidebar-padding
+	
+	background-color: $sidebar-bg
+	border-left: 1px solid $sidebar-border
+	
+	color: $sidebar-color
+	
+	header
+		margin-bottom: $sidebar-padding*2
+		
+		text-align: center
+
+		h2
+			margin: 0 0 4px
+			padding: 0
+
+			b
+				$dark-orange: darken($orange, 20%)
+				text-shadow: 1px 1px 0 $dark-orange, 2px 2px 0 $dark-orange
+	
+	footer
+		width: $sidebar-width - $sidebar-padding*2
+		
+		position: absolute
+		bottom: $sidebar-padding - 2px
+		
+		font-size: 12px
+		color: darken($sidebar-color, 30%)
+		
+		.github
+			width: 14px
+			vertical-align: text-top
+		
+		.credits
+			margin-top: 4px
+
+.sidebar-panel
+	background-color: $sidebar-panel-bg
+	border-radius: 4px
+	padding: 8px
+	box-shadow: 1px 1px 0 0 darken($sidebar-bg, 2%)
+
+.sidebar-section
+	margin-bottom: $sidebar-padding
+	
+	h4
+		//text-shadow: 1px 1px 0 darken($sidebar-panel-bg, 2%)
+		
+		img
+			width: 24px
+			vertical-align: text-top
+	
+	.action-buttons
+		margin-top: $sidebar-padding/2
+
+.item-list
+	display: flex
+	flex-wrap: wrap
+	flex-direction: row
+	list-style: none
+	
+	margin: 0
+	padding: 0
+	
+	.item
+		//width: $item-size
+		//height: $item-size
+		
+		padding: $item-padding
+		
+		background-color: $item-bg
+		margin-left: 2px
+		margin-right: 2px
+		margin-bottom: 4px
+		
+		&:hover
+			background-color: $item-hover-bg
+		
+		&.active
+			background-color: $item-active-bg
+
+// Other
+
+.options
+	h6
+		margin-bottom: 2px
+	
+	label
+		font-size: 12px
+
+.browser-update
+	padding: 20px
+	min-width: 200px
+
+.controls-list
+	list-style: none
+
+	li
+		margin-bottom: 4px
