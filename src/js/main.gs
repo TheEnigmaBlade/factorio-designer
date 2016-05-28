@@ -27,6 +27,7 @@ var drawWidth = c.width,
 	hoverTileX = -1,
 	hoverTileY = -1,
 	hoverConflict = false,
+	hoverConflictItem = null,
 	lastTileX = -1,
 	lastTileY = -1
 	
@@ -74,16 +75,17 @@ fun findTileKey(cond) {
 
 // Drawing
 
-var bgColor = "#27A6CC",
-	gridColor = "#9CE5FB",
+var bgColor = "rgb(39,166,204)",//"#27A6CC",
+	gridColor = "rgba(156,229,251, 0.5)",//"#9CE5FB",
 	textColor = "#FFF"
 
 var hoverColor = "rgba(0, 255, 150, 0.3)",
 	hoverErrorColor = "rgba(255, 150, 150, 0.5)",
-	powerColor = "rgba(100, 150, 255, 0.6)"
+	hoverArrowColor = "#FFF",
+	powerColor = "rgba(100, 120, 255, 0.7)"
 
-fun draw {
-	cg.clearRect(0, 0, drawWidth, drawHeight)
+var draw = $.throttle(15, {{
+	//cg.clearRect(0, 0, drawWidth, drawHeight)
 	
 	cg.beginPath()
 	cg.fillStyle = bgColor
@@ -101,7 +103,7 @@ fun draw {
 	if DEBUG {
 		drawDebug()
 	}
-}
+}})
 
 fun drawGrid {
 	cg.beginPath()
@@ -199,11 +201,23 @@ fun drawHoverHighlight {
 	if currentItem {
 		drawCenteredRange(hoverTileX, hoverTileY, currentItem, true)
 		
+		// Draw background
 		cg.fillStyle = hoverConflict ? hoverErrorColor : hoverColor
-		
 		cg.beginPath()
 		cg.fillRect(hoverTileX*tileSize + offsetX, hoverTileY*tileSize + offsetY, currentItem.width*tileSize, currentItem.height*tileSize)
 		cg.closePath()
+		
+		// Draw arrow
+		if currentItem.rotatable {
+			cg.translate(hoverTileX*tileSize + currentItem.width*tileHalfSize, hoverTileY*tileSize + currentItem.height*tileHalfSize)
+			cg.rotate(currentAngle)
+			
+			cg.lineWidth = 4
+			cg.strokeStyle = hoverArrowColor
+			drawArrow(0, currentItem.height*tileHalfSize, 0, -currentItem.height*tileHalfSize)
+			
+			cg.setTransform(1, 0, 0, 1, 0, 0)
+		}
 		
 		cg.fill()
 	}
@@ -257,6 +271,40 @@ fun drawDebug {
 	cg.fill()
 }
 
+//// Draw utilities
+
+fun drawArrow(fromx, fromy, tox, toy) {
+	// http://stackoverflow.com/questions/808826/draw-arrow-on-canvas-tag
+	var angle = Math.atan2(toy-fromy,tox-fromx),
+		headAngle = Math.PI/7,
+		headLen = 10
+	
+	//starting path of the arrow from the start square to the end square and drawing the stroke
+	cg.beginPath()
+	cg.moveTo(fromx, fromy)
+	cg.lineTo(tox, toy)
+	cg.stroke()
+	
+	//starting a new path from the head of the arrow to one of the sides of the point
+	//cg.beginPath()
+	cg.moveTo(tox, toy)
+	cg.lineTo(tox-headLen*Math.cos(angle-headAngle),toy-headLen*Math.sin(angle-headAngle))
+	
+	//path from the side point of the arrow, to the other side point
+	cg.lineTo(tox-headLen*Math.cos(angle+headAngle),toy-headLen*Math.sin(angle+headAngle))
+	
+	//path from the side point back to the tip of the arrow, and then again to the opposite side point
+	cg.lineTo(tox, toy)
+	cg.lineTo(tox-headLen*Math.cos(angle-headAngle),toy-headLen*Math.sin(angle-headAngle))
+	
+	cg.closePath()
+	
+	//draws the paths created above
+	cg.stroke()
+	//cg.fillStyle = "#cc0000"
+	//cg.fill()
+}
+
 // Input
 
 var pressed = false,
@@ -268,10 +316,10 @@ var pressed = false,
 
 fun tileActionInput(e) {
 	if e[DELETE_MODIFIER+"Key"] {
-		delTile(hoverTileX, hoverTileY)
+		return delTile(hoverTileX, hoverTileY)
 	}
-	elif not hoverConflict {
-		setTile(hoverTileX, hoverTileY)
+	else {
+		return setTile(hoverTileX, hoverTileY)
 	}
 }
 
@@ -297,20 +345,48 @@ c.onmousedown = {{:e:
 c.onmouseup = {{:e:
 	pressed = scrollPressed = false
 	dragging = false
+	if currentItem {
+		showHover = true
+	}
 }}
 
 c.onmousemove = {{:e:
 	newX = e.pageX - c.offsetLeft
 	newY = e.pageY - c.offsetTop
 	
+	var doDraw = false
+	
+	// Update hover information and tile conflicts
+	hoverTileX = (newX-offsetX) /# tileSize
+	hoverTileY = (newY-offsetY) /# tileSize
+	var tileChanged = hoverTileX != lastTileX or hoverTileY != lastTileY
+	
+	if tileChanged {
+		doDraw = true
+		
+		// Find tile conflicts
+		hoverConflict = false
+		if currentItem {
+			iterTiles({{:tile:
+				if tile.overlapsTileData(hoverTileX, hoverTileY, currentItem) {
+					hoverConflict = true
+					hoverConflictItem = tile.data
+					return true
+				}
+			}})
+		}
+	}
+	
+	// Update input based on drag state
 	if dragging {
-		if pressed {
-			tileActionInput(e)
+		if pressed and tileChanged {
+			doDraw |= tileActionInput(e)
 		}
 		elif scrollPressed {
 			offsetX += newX - mouseX
 			offsetY += newY - mouseY
 			updateTileVisibility()
+			doDraw = true
 		}
 		mouseX = newX
 		mouseY = newY
@@ -326,31 +402,18 @@ c.onmousemove = {{:e:
 			if scrollPressed {
 				offsetX += diffX
 				offsetY += diffY
+				showHover = false
+				doDraw = true
 			}
-		}
-		return
-	}
-	
-	// Always update hover information
-	hoverTileX = (newX-offsetX) /# tileSize
-	hoverTileY = (newY-offsetY) /# tileSize
-	
-	if hoverTileX != lastTileX or hoverTileY != lastTileY {
-		hoverConflict = false
-		if currentItem {
-			iterTiles({{:tile:
-				if tile.overlapsTileData(hoverTileX, hoverTileY, currentItem) {
-					hoverConflict = true
-					return true
-				}
-			}})
 		}
 	}
 	
 	lastTileX = hoverTileX
 	lastTileY = hoverTileY
 	
-	draw()
+	if doDraw {
+		draw()
+	}
 }}
 
 $(c).mouseenter({{
@@ -397,6 +460,9 @@ $(window).keypress({{:e:
 		}
 		else {
 			print("  No tile")
+			if showHover {
+				draw()
+			}
 		}
 	}
 	elif e.key == "q" {
@@ -429,14 +495,18 @@ fun tileKey(tileX, tileY) {
 fun setTile(tileX, tileY) {
 	if not currentItem {
 		error("Can't set tile: no item selected")
-		return
+		return false
 	}
 	if hoverConflict {
-		error("Can't set tile: overlap")
+		// Kind-of hacky, but should work for now
+		//if currentItem.image != hoverConflictItem.image {
+			error("Can't set tile: overlap")
+			return false
+		//}
 	}
 	print("Setting tile @ ("+tileX+", "+tileY+")")
-	print("  Image="+currentItem.image)
 	tiles[tileKey(tileX, tileY)] = new Tile(tileX, tileY, currentItem)
+	return true
 }
 
 fun getTile(tileX, tileY) {
@@ -457,7 +527,25 @@ fun getTile(tileX, tileY) {
 
 fun delTile(tileX, tileY) {
 	print("Deleting tile @ ("+tileX+", "+tileY+")")
-	del tiles[tileKey(tileX, tileY)]
+	
+	var key = tileKey(tileX, tileY)
+	if not tiles[key] {
+		key = findTileKey({{:tile:
+			if tile.overlapsTile(tileX, tileY, 1, 1) {
+				return true
+			}
+			return false
+		}})
+	}
+	
+	if key {
+		del tiles[key]
+		return true
+	}
+	else {
+		error("Can't delete tile: none found")
+		return false
+	}
 }
 
 fun clearTiles {
@@ -511,6 +599,7 @@ $("#option-debug").change({{
 
 $("#clear-tiles").click({{
 	clearTiles()
+	draw()
 }})
 
 // Start

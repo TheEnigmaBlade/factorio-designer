@@ -177,3 +177,31 @@ label
 
 	li
 		margin-bottom: 4px
+
+#feature-error
+	display: none
+	
+	.no-canvas &, .no-flexbox &, .no-flexwrap &
+		display: block
+	
+	$width: 500px
+	$height: 110px
+	$padding: 30px
+	
+	position: absolute
+	top: 50%
+	left: 50%
+	
+	#feature-error-content
+		width: $width
+		height: $height
+		position: relative
+		
+		margin-left: -$width/2 - $padding/2
+		margin-top: -$height/2 - $padding/2
+		padding: $padding
+		
+		background-color: whitesmoke
+		border: 1px solid darkorange
+		
+		text-align: center
